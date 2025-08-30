@@ -24,7 +24,7 @@ This project demonstrates a NestJS-based to-do list REST API deployed on a Kuber
 ## Setup Instructions
 1. **Clone the Repository**:
    ```bash
-   git clone <your-repo-url>
+   git clone git@github.com:KamranMiadi/todo-backend.git
    cd todo-backend
    ```
 2. **Start Minikube**:
