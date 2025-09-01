@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   getHello(): string {
-    return 'Hello World! V 0.0.2';
+    const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/todo';
+    const dbPassword = process.env.DB_PASSWORD || 'not-set';
+    return `Hello from NestJS! DB URL: ${dbUrl}, DB Password: ${dbPassword}`;
   }
 }
