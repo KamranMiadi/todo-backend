@@ -3,6 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TodoModule } from './todo/todo.module';
+import { PrometheusController } from './prometheus/prometheus.controller';
+import { PrometheusInterceptor } from './prometheus/prometheus.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -16,7 +19,13 @@ import { TodoModule } from './todo/todo.module';
     ),
     TodoModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, PrometheusController],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: PrometheusInterceptor,
+    },
+  ],
 })
 export class AppModule {}
