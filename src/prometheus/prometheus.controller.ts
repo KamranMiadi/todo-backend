@@ -3,8 +3,8 @@ import { register, Counter } from 'prom-client';
 
 @Controller('metrics')
 export class PrometheusController {
-  private readonly httpRequestsTotal = new Counter({
-    name: 'http_requests_total',
+  private readonly customHttpRequestsTotal = new Counter({
+    name: 'http_requests_total_custom',
     help: 'Total number of HTTP requests',
     labelNames: ['method', 'path', 'status'],
   });
