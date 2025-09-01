@@ -100,6 +100,10 @@ This project demonstrates a NestJS-based to-do list REST API deployed on a Kuber
 - Service: Provides a stable ClusterIP for accessing the NestJS app, abstracting pod IPs and enabling load balancing across replicas.
 - Rolling Updates: Updates to the Docker image are applied without downtime, as Kubernetes gradually replaces old pods with new ones.
 
+### Rolling Updates
+
+The Deployment uses a rolling update strategy to apply changes (e.g., new image or environment variables) without downtime. When the `deployment.yaml` is updated, Kubernetes creates a new ReplicaSet, gradually replacing old pods with new ones while maintaining availability. The `todo-backend-service` ensures continuous access by load-balancing traffic across healthy pods, leveraging the `app: todo-backend` selector.
+
 ## Planned Enhancements
 
 - ConfigMaps and Secrets: Manage application configuration (e.g., port, database URL) and sensitive data (e.g., database password).
