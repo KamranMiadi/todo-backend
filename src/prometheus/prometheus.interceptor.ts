@@ -11,8 +11,8 @@ import { Request, Response } from 'express';
 
 @Injectable()
 export class PrometheusInterceptor implements NestInterceptor {
-  private readonly httpRequestsTotal = new Counter({
-    name: 'http_requests_total',
+  private readonly CustomHttpRequestsTotal = new Counter({
+    name: 'http_requests_total_custom',
     help: 'Total number of HTTP requests',
     labelNames: ['method', 'path', 'status'],
   });
@@ -23,7 +23,7 @@ export class PrometheusInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       tap(() => {
-        this.httpRequestsTotal.inc({
+        this.CustomHttpRequestsTotal.inc({
           method: request.method,
           path: request.path,
           status: response.statusCode,
