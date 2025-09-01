@@ -20,3 +20,19 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
+        env:
+        - name: APP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: todo-backend-config
+              key: APP_PORT
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: todo-backend-config
+              key: DB_URL
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: todo-backend-secret
+              key: DB_PASSWORD
