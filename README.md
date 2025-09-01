@@ -103,12 +103,12 @@ This project demonstrates a NestJS-based to-do list REST API deployed on a Kuber
 
 ## Kubernetes Concepts Demonstrated
 
-- Deployment: Manages 3 replicas of the NestJS app, ensuring high availability and enabling rolling updates. The imagePullPolicy: Always ensures the latest image is pulled from Docker Hub.
-- Service: Provides a stable ClusterIP for accessing the NestJS app, abstracting pod IPs and enabling load balancing across replicas.
-- ConfigMap: Stores non-sensitive configuration (e.g., APP_PORT, DB_URL) for easy updates.
-- Secret: Securely stores sensitive data (e.g., database password) in base64-encoded format.
-- Persistent Volume Claim: Ensures MongoDB data persists across pod restarts.
-- Rolling Updates: Updates to the Docker image are applied without downtime, as Kubernetes gradually replaces old pods with new ones.
+- **Deployment**: Manages 3 replicas of the NestJS app, ensuring high availability and enabling rolling updates. The imagePullPolicy: Always ensures the latest image is pulled from Docker Hub.
+- **Service**: Provides a stable ClusterIP for accessing the NestJS app, abstracting pod IPs and enabling load balancing across replicas.
+- **ConfigMap**: Stores non-sensitive configuration (e.g., APP_PORT, DB_URL) for easy updates.
+- **Secret**: Securely stores sensitive data (e.g., database password) in base64-encoded format.
+- **Persistent Volume Claim**: Ensures MongoDB data persists across pod restarts.
+- **Rolling Updates**: Updates to the Docker image are applied without downtime, as Kubernetes gradually replaces old pods with new ones.
 
 > **Rolling Updates**:
 > The Deployment uses a rolling update strategy to apply changes (e.g., new image or environment variables) without downtime. When the > `deployment.yaml` is updated, Kubernetes creates a new ReplicaSet, gradually replacing old pods with new ones while maintaining
