@@ -10,9 +10,10 @@ This project demonstrates a NestJS-based to-do list REST API deployed on a Kuber
   - ClusterIP Service for stable internal access to the NestJS app.
   - ConfigMap for non-sensitive configuration (e.g., port, database URL).
   - Secret for sensitive data (e.g., mock database password).
+  - MongoDB Deployment with a Persistent Volume Claim (PVC) for data persistence.
+  - MongoDB Service for database connectivity.
 - **Containerization**: Dockerized NestJS app hosted on Docker Hub (`kamranmiadi/todo-backend:latest`).
 - **Planned Features** (to be implemented):
-  - MongoDB with Persistent Volume Claim (PVC) for data persistence.
   - Horizontal Pod Autoscaler (HPA) for automatic scaling.
   - Prometheus and Grafana for monitoring and observability.
 
@@ -52,6 +53,9 @@ This project demonstrates a NestJS-based to-do list REST API deployed on a Kuber
    ```bash
    kubectl apply -f k8s/configmap.yaml
    kubectl apply -f k8s/secret.yaml
+   kubectl apply -f k8s/mongodb-pvc.yaml
+   kubectl apply -f k8s/mongodb-deployment.yaml
+   kubectl apply -f k8s/mongodb-service.yaml
    kubectl apply -f k8s/deployment.yaml
    kubectl apply -f k8s/service.yaml
    ```
@@ -61,12 +65,13 @@ This project demonstrates a NestJS-based to-do list REST API deployed on a Kuber
    ```bash
    kubectl get deployments
    kubectl get pods -l app=todo-backend
-   kubectl get services
+   kubectl get pods -l app=mongodb   kubectl get services
    kubectl get configmaps
    kubectl get secrets
+   kubectl get pvc
    ```
 
-- Expect 3 replicas running, a ClusterIP Service, a ConfigMap, and a Secret.
+- Expect 3 NestJS replicas, 1 MongoDB pod, ClusterIP Services, a ConfigMap, a Secret, and a PVC.
 
 6.**Test the Application**:
 
@@ -77,7 +82,9 @@ This project demonstrates a NestJS-based to-do list REST API deployed on a Kuber
   In another terminal:
 
   ```bash
-  curl http://localhost:3000
+   curl -X POST http://localhost:3000/todos -H "Content-Type: application/json" -d '{"title":"Test Todo","description":"Test Description"}'
+
+   curl http://localhost:3000/todos
   ```
 
   Expected response: "Hello from NestJS! DB URL: mongodb://mongodb-service:27017/todo, DB Password: password123" (or your updated response).
@@ -98,16 +105,17 @@ This project demonstrates a NestJS-based to-do list REST API deployed on a Kuber
 
 - Deployment: Manages 3 replicas of the NestJS app, ensuring high availability and enabling rolling updates. The imagePullPolicy: Always ensures the latest image is pulled from Docker Hub.
 - Service: Provides a stable ClusterIP for accessing the NestJS app, abstracting pod IPs and enabling load balancing across replicas.
+- ConfigMap: Stores non-sensitive configuration (e.g., APP_PORT, DB_URL) for easy updates.
+- Secret: Securely stores sensitive data (e.g., database password) in base64-encoded format.
+- Persistent Volume Claim: Ensures MongoDB data persists across pod restarts.
 - Rolling Updates: Updates to the Docker image are applied without downtime, as Kubernetes gradually replaces old pods with new ones.
 
-### Rolling Updates
-
-The Deployment uses a rolling update strategy to apply changes (e.g., new image or environment variables) without downtime. When the `deployment.yaml` is updated, Kubernetes creates a new ReplicaSet, gradually replacing old pods with new ones while maintaining availability. The `todo-backend-service` ensures continuous access by load-balancing traffic across healthy pods, leveraging the `app: todo-backend` selector.
+> **Rolling Updates**:
+> The Deployment uses a rolling update strategy to apply changes (e.g., new image or environment variables) without downtime. When the > `deployment.yaml` is updated, Kubernetes creates a new ReplicaSet, gradually replacing old pods with new ones while maintaining
+> availability. The `todo-backend-service` ensures continuous access by load-balancing traffic across healthy pods, leveraging the`app: > todo-backend` selector.
 
 ## Planned Enhancements
 
-- ConfigMaps and Secrets: Manage application configuration (e.g., port, database URL) and sensitive data (e.g., database password).
-- Persistent Storage: Deploy MongoDB with a Persistent Volume Claim for data persistence.
 - Autoscaling: Implement a Horizontal Pod Autoscaler to scale the app based on CPU usage.
 - Monitoring: Add Prometheus and Grafana for observability, with dashboards for CPU, memory, and request metrics.
 
