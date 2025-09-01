@@ -36,3 +36,10 @@ spec:
             secretKeyRef:
               name: todo-backend-secret
               key: DB_PASSWORD
+        resources:
+          requests:
+            cpu: "100m" # 100 milliCPU (0.1 CPU)
+            memory: "128Mi"
+          limits:
+            cpu: "200m" # 200 milliCPU (0.2 CPU)
+            memory: "256Mi"
