@@ -7,10 +7,11 @@ import { TodoModule } from './todo/todo.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      process.env.DB_URL || 'mongodb://localhost:27017/todo',
+      process.env.DB_URL || 'mongodb://localhost:27017/admin',
       {
         user: 'admin',
         pass: process.env.DB_PASSWORD,
+        dbName: 'todo', // Use 'todo' database after authentication
       },
     ),
     TodoModule,
