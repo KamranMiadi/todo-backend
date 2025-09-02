@@ -5,15 +5,15 @@ metadata:
   namespace: default
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-  spec:
-    rules:
-    - host: todo.154.91.170.176.nip.io
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: todo-service
-              port:
-                number: 80
+spec:
+  rules:
+  - host: todo.154.91.170.176.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: todo-service
+            port:
+              number: 80
