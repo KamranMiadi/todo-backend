@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Request, Res } from '@nestjs/common';
 import { register } from 'prom-client';
-
+import express from 'express';
 @Controller('metrics')
 export class PrometheusController {
   constructor() {
@@ -9,7 +9,8 @@ export class PrometheusController {
   }
 
   @Get()
-  async getMetrics() {
-    return await register.metrics();
+  async getMetrics(@Res() res: express.Response) {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
   }
 }
